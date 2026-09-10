@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17
+    container_name: bank_analytics_db
+
+    environment:
+      POSTGRES_DB: bank_analytics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bank_analytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build: .
+    container_name: bank_analytics_api
+
+    ports:
+      - "8000:8000"
+
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/bank_analytics
+      SECRET_KEY: ${SECRET_KEY}
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
