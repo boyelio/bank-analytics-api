@@ -114,7 +114,7 @@ BANK_ANALYTICS_API/
 Clone o projeto:
 
 ```bash
-git clone <https://github.com/boyelio/bank-analytics-api>
+git clone https://github.com/boyelio/bank-analytics-api .
 cd BANK_ANALYTICS_API
 ```
 
